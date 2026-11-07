@@ -15,7 +15,7 @@
 
 | | Host node (`npm run host`) | Client node (`npm run client -- hs://…`) |
 |---|---|---|
-| QVAC + Qwen3.5-9B | ✔ | none |
+| QVAC + Qwen3.5-4B | ✔ | none |
 | Knowledge base (Firecrawl) | ✔ (watched, live re-index) | none (proxied to host) |
 | Forum node (Hyperswarm) | ✔ | ✔ its own full replica |
 | Holesail | server: publishes `127.0.0.1:8787` | client: host → `127.0.0.1:8789` |

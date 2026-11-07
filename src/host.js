@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // HOST: the machine with the GPU.
-//  • runs Qwen3.5-9B locally via QVAC (the wellbeing guide)
+//  • runs Qwen3.5 (4B default) locally via QVAC (the wellbeing guide)
 //  • indexes ./firecrawl resources for signposting
 //  • joins the anonymous P2P forum (Hyperswarm)
 //  • serves UI + API on 127.0.0.1 and publishes it via Holesail under a secret key

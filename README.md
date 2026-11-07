@@ -6,7 +6,7 @@ workload, exams, impostor syndrome, bullying, loneliness and more.
 - **Talk:** an AI guide that listens and suggests small next steps. It also
   **signposts** students to the right university services and people: the
   counselling service, the student council (SRC), student ambassadors, advisers.
-  The guide runs **100% locally** with QVAC (Qwen3.5-9B) on hardware the
+  The guide runs **100% locally** with QVAC (Qwen3.5-4B by default) on hardware the
   community owns.
 - **Community:** an **anonymous forum** that syncs **peer-to-peer** over
   Hyperswarm. There's no server, no accounts and no names, and it keeps working
@@ -24,7 +24,7 @@ Built for the *Be Your Own Datacenter* challenge (QVAC × Pears). See
  ┌──────────────────────────────────┐                   ┌──────────────────────────────────────┐
  │ browser → http://127.0.0.1:8788  │                   │ http://127.0.0.1:8787 (loopback)     │
  │   ├ /api/forum/* → local forum ◄─┼── Hyperswarm ────►│ forum node ◄──► other students' nodes│
- │   └ /api/chat, … ─► holesail ────┼── Holesail P2P ──►│ guide → QVAC → Qwen3.5-9B (GPU)      │
+ │   └ /api/chat, … ─► holesail ────┼── Holesail P2P ──►│ guide → QVAC → Qwen3.5-4B (GPU)      │
  └──────────────────────────────────┘   (encrypted)     │       ↑ resources from ./firecrawl   │
                                                         └──────────────────────────────────────┘
 ```
@@ -36,13 +36,13 @@ Built for the *Be Your Own Datacenter* challenge (QVAC × Pears). See
 | Node.js | ≥ 22.17 | ≥ 22.17 |
 | OS | Windows 10+ x64, Linux (Ubuntu 22+), or macOS 14+ arm64 | any OS that runs Node |
 | GPU | Vulkan ≥ 1.4 driver recommended; falls back to CPU | none |
-| Disk / RAM | ~6 GB for the model, 16 GB RAM recommended | none |
+| Disk / RAM | ~3 GB for the model, 16 GB RAM recommended | none |
 
 ## Setup
 
 ```bash
 npm install
-npm run prefetch     # optional: downloads Qwen3.5-9B (~5.7 GB) and asks it one question
+npm run prefetch     # optional: downloads Qwen3.5-4B (~2.7 GB) and asks it one question
 ```
 
 ## Run the demo
@@ -138,7 +138,8 @@ message to the forum.
 | `GUH_UNIVERSITY` | `your university` | University name used by the guide |
 | `GUH_FIRECRAWL_DIR` | `./firecrawl` | Where resource JSON is read from |
 | `GUH_CRISIS_FILE` | `config/crisis-contacts.json` | Urgent-help contacts |
-| `QVAC_MODEL_FILE` | `Qwen3.5-9B-Q4_K_M.gguf` | File from the unsloth repo (`…Q3_K_M.gguf` for GPUs with ≤6 GB VRAM) |
+| `QVAC_MODEL_SIZE` | `4B` | Qwen3.5 size: `0.8B`, `2B` (fastest usable), `4B`, or `9B` (best quality, slowest) |
+| `QVAC_MODEL_FILE` | `Qwen3.5-<size>-Q4_K_M.gguf` | File from the unsloth repo (e.g. `…Q3_K_M.gguf` for less VRAM) |
 | `QVAC_MODEL_SRC` | HF URL | Any GGUF: an HTTPS URL, a path, or `pear://…` |
 | `QVAC_CTX_SIZE` | `8192` | Context window |
 | `QVAC_GPU_LAYERS` / `QVAC_DEVICE` | auto / `gpu` | Pin GPU layers, or force `cpu` |
@@ -168,8 +169,7 @@ PowerShell: `$env:GUH_UNIVERSITY="University of Glasgow"; npm run host`
 
 - **Slow replies:** check *System details → Last reply* for `on GPU`. Only run
   **one** host per GPU, because two copies of the model split VRAM and drop
-  speed from about 15 to about 4 tok/s. On GPUs with ≤6 GB, try
-  `QVAC_MODEL_FILE=Qwen3.5-9B-Q3_K_M.gguf`.
+  speed a lot. For more speed, try `QVAC_MODEL_SIZE=2B`.
 - **"Deep thinking"** (in System details) turns on Qwen's reasoning. Replies
   get more considered but are much slower.
 - **"Oasis needs a restart" banner, or "not found" when posting:** an old

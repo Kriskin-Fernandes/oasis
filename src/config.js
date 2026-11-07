@@ -8,7 +8,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const env = (k, d) => (process.env[k] !== undefined && process.env[k] !== '' ? process.env[k] : d)
 const num = (k, d) => (process.env[k] ? Number(process.env[k]) : d)
 
-const HF_REPO = 'https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/resolve/main'
+// Qwen3.5 size: 0.8B | 2B | 4B | 9B. 4B is ~2x faster than 9B with good quality;
+// 2B is faster still for weak GPUs/CPU-only. Override with QVAC_MODEL_SIZE.
+const MODEL_SIZE = env('QVAC_MODEL_SIZE', '4B')
+const HF_REPO = `https://huggingface.co/unsloth/Qwen3.5-${MODEL_SIZE}-GGUF/resolve/main`
 const DATA = env('GUH_DATA_DIR', path.join(ROOT, 'data'))
 
 export const config = {
@@ -24,10 +27,9 @@ export const config = {
 
   model: {
     // Any llama.cpp-compatible GGUF works: HTTP URL, absolute path, or pear:// key.
-    // Q4_K_M (~5.7 GB) is the best quality/size trade-off for 6–8 GB GPUs.
-    // Smaller GPUs: set QVAC_MODEL_FILE=Qwen3.5-9B-Q3_K_M.gguf (~4.7 GB).
-    src: env('QVAC_MODEL_SRC', `${HF_REPO}/${env('QVAC_MODEL_FILE', 'Qwen3.5-9B-Q4_K_M.gguf')}`),
-    name: env('QVAC_MODEL_NAME', 'Qwen3.5-9B (unsloth GGUF)'),
+    // Q4_K_M is the best quality/size trade-off (4B ≈ 2.7 GB, 9B ≈ 5.7 GB).
+    src: env('QVAC_MODEL_SRC', `${HF_REPO}/${env('QVAC_MODEL_FILE', `Qwen3.5-${MODEL_SIZE}-Q4_K_M.gguf`)}`),
+    name: env('QVAC_MODEL_NAME', `Qwen3.5-${MODEL_SIZE} (unsloth GGUF)`),
     modelConfig: {
       ctx_size: num('QVAC_CTX_SIZE', 8192),
       // Unset = let QVAC auto-fit layers to free VRAM. Set to pin (0 = CPU only).
