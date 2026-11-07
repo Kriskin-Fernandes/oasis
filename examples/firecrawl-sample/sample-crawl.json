@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "status": "completed",
+  "_note": "SAMPLE DATA for demos only. 'Example University' and every contact below are fictional. Put real Firecrawl output in ./firecrawl and this file is ignored.",
+  "data": [
+    {
+      "markdown": "# Student Counselling Service\n\nThe Counselling Service offers free, confidential one-to-one sessions with qualified counsellors for any registered student. You do not need a referral.\n\n## How to book\n\nComplete the online self-referral form or drop in to the Wellbeing Hub (Student Union, Level 2) Monday to Friday, 10:00 to 16:00. Most students are offered a first appointment within 5 working days.\n\n## What we can help with\n\nStress and anxiety, low mood and depression, exam pressure, relationship difficulties, homesickness, loneliness, bereavement, and anything else that is affecting your wellbeing.\n\nEmail: counselling@example.ac.uk",
+      "metadata": { "title": "Counselling Service | Example University", "description": "Free, confidential counselling for all students. Self-refer online or drop in to the Wellbeing Hub.", "sourceURL": "https://www.example.ac.uk/wellbeing/counselling" }
+    },
+    {
+      "markdown": "# Extensions and Good Cause\n\nIf illness, personal circumstances or an unmanageable workload affect your ability to meet a coursework deadline, you can request an extension of up to 7 days through the student portal.\n\nFor longer problems, or if your exam performance was affected, submit a Good Cause claim with supporting evidence within 5 working days of the assessment.\n\n## Who to talk to\n\nYour Adviser of Studies can help you plan your workload and decide which option is right for you. The Student Advice Centre (run by the Students' Representative Council) gives free, independent advice on academic appeals and Good Cause.\n\nEmail: advice@example-src.org",
+      "metadata": { "title": "Extensions and Good Cause | Example University", "description": "Request a coursework extension or submit Good Cause if circumstances affect your studies.", "sourceURL": "https://www.example.ac.uk/students/extensions" }
+    },
+    {
+      "markdown": "# Report and Support: Bullying and Harassment\n\nExample University does not tolerate bullying, harassment or discrimination. You can report an incident anonymously or with your details using Report and Support.\n\nIf you give your details, a trained Respect Adviser will contact you within 2 working days to talk through your options in confidence. You stay in control of what happens next.\n\nRespect Advisers can also support you if you are unsure whether what happened counts as bullying.\n\nEmail: respect@example.ac.uk",
+      "metadata": { "title": "Report and Support | Example University", "description": "Report bullying, harassment or discrimination anonymously, or talk to a Respect Adviser.", "sourceURL": "https://www.example.ac.uk/reportandsupport" }
+    },
+    {
+      "markdown": "# Peer Support and Feeling Like You Belong\n\nMany students feel like they do not belong or that everyone else is more capable, often called impostor syndrome. It is very common, especially in first year and among first-generation and international students.\n\n## Peer Mentoring\n\nThe Peer Mentoring scheme pairs you with a trained student from your school who has been through the same course. Sign up any time through the Students' Representative Council.\n\n## Nightline\n\nNightline is an anonymous, confidential listening service run by students for students, open 19:00 to 07:00 during term. Call 0000 000 0000 or use the instant messaging on the Nightline website.\n\n## Effective Learning Advisers\n\nThe Learning Development Team runs workshops on time management, procrastination and exam preparation, and offers one-to-one study skills appointments.",
+      "metadata": { "title": "Peer Support | Example University", "description": "Peer mentoring, Nightline listening service and study skills support.", "sourceURL": "https://www.example.ac.uk/wellbeing/peer-support" }
+    }
+  ]
+}

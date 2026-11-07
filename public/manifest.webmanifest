@@ -1,0 +1,10 @@
+{
+  "name": "Oasis",
+  "short_name": "Oasis",
+  "description": "A quiet place to talk things through. Local AI + peer-to-peer community.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#f5f2ec",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

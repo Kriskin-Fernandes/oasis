@@ -1,0 +1,28 @@
+{
+  "name": "oasis-p2p-wellbeing",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Oasis: a private, local-AI wellbeing guide and anonymous peer-to-peer community for students (QVAC + Holesail + Hyperswarm)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.17"
+  },
+  "scripts": {
+    "host": "node src/host.js",
+    "client": "node src/client.js",
+    "prefetch": "node scripts/prefetch-model.js",
+    "test:p2p": "node scripts/smoke-test.js p2p",
+    "test:forum": "node scripts/smoke-test.js forum",
+    "test:kb": "node scripts/smoke-test.js kb",
+    "test:chat": "node scripts/smoke-test.js chat",
+    "test:e2e": "node scripts/e2e-test.js"
+  },
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@qvac/sdk": "^0.23.0",
+    "b4a": "^1.9.0",
+    "holesail": "^2.4.4",
+    "hyperswarm": "^4.17.2",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

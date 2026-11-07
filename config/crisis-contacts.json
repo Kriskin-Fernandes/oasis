@@ -1,0 +1,10 @@
+{
+  "_note": "Shown whenever someone may be in immediate danger. Defaults are UK national services; edit for your country/university. Add campus security or the university's out-of-hours line here.",
+  "region": "UK",
+  "contacts": [
+    { "name": "Emergency services", "detail": "Call 999 if you or someone else is in immediate danger", "action": "tel:999" },
+    { "name": "Samaritans", "detail": "Free, 24/7, any time you need to talk: 116 123", "action": "tel:116123" },
+    { "name": "Shout", "detail": "Free 24/7 text support: text SHOUT to 85258", "action": "sms:85258?body=SHOUT" },
+    { "name": "NHS 111", "detail": "Urgent mental health help (select the mental health option)", "action": "tel:111" }
+  ]
+}

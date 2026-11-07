@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "_note": "SAMPLE DATA (Firecrawl /extract format). All names and contacts are fictional placeholders.",
+  "data": {
+    "people": [
+      { "name": "Alex Morgan", "role": "SRC Vice President for Student Support", "area": "Student council: wellbeing campaigns, representing students on welfare issues", "email": "vp-support@example-src.org", "url": "https://www.example-src.org/people" },
+      { "name": "Priya Shah", "role": "Student Wellbeing Ambassador (College of Science and Engineering)", "area": "Informal peer support, signposting, impostor syndrome and settling in", "email": "ambassadors@example.ac.uk", "url": "https://www.example.ac.uk/wellbeing/ambassadors" },
+      { "name": "Jamie Okafor", "role": "Student Wellbeing Ambassador (International Students)", "area": "Homesickness, loneliness, adjusting to life in a new country", "email": "ambassadors@example.ac.uk", "url": "https://www.example.ac.uk/wellbeing/ambassadors" },
+      { "name": "Wellbeing Hub Team", "role": "Student Support Officers", "area": "First point of contact for any wellbeing concern; drop-in Monday to Friday 10:00 to 16:00", "email": "wellbeing@example.ac.uk", "url": "https://www.example.ac.uk/wellbeing" }
+    ]
+  }
+}

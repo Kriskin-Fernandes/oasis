@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f2ec" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1c2321" media="(prefers-color-scheme: dark)" />
+  <title>Oasis</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="/icon.svg" alt="" width="28" height="28" />
+      <span id="app-name">Oasis</span>
+    </div>
+    <div class="top-actions">
+      <button class="pill urgent" id="open-crisis" type="button">Need help now?</button>
+      <button class="icon-btn" id="open-debug" type="button" aria-label="System details">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span class="status-dot" id="status-dot"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="banner" class="banner" role="status" hidden></div>
+
+  <nav class="tabs" aria-label="Sections">
+    <button data-view="talk" class="active" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 18l-1.5 3 4-1.6A8.5 8.5 0 1 0 5 18z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span>Talk</span>
+    </button>
+    <button data-view="community" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.5" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="16.5" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M3 19c.8-3 3-4.5 5.5-4.5S13.2 16 14 19M14.5 15.2c.6-.4 1.3-.6 2-.6 2 0 3.6 1.3 4.2 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Community</span>
+    </button>
+    <button data-view="resources" type="button">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.3-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.7-7 10-7 10z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span>Support</span>
+    </button>
+  </nav>
+
+  <main>
+    <!-- TALK ─────────────────────────────────────────────────────────── -->
+    <section id="view-talk" class="view active" aria-label="Talk">
+      <div id="talk-empty" class="welcome">
+        <div class="breath" aria-hidden="true"><span></span></div>
+        <h1 id="welcome-title">Hi, I'm Oasis.</h1>
+        <p class="soft">What's on your mind? I can listen, suggest small next steps, and point you to the right people at <span id="uni-name">your university</span>.</p>
+        <div class="chips" id="suggestions">
+          <button type="button" class="chip">I'm overwhelmed with deadlines</button>
+          <button type="button" class="chip">I feel like I don't belong on my course</button>
+          <button type="button" class="chip">Someone keeps putting me down</button>
+          <button type="button" class="chip">I can't sleep before exams</button>
+          <button type="button" class="chip">I feel lonely here</button>
+        </div>
+        <p class="fineprint">Private: runs on your community's own hardware, never a cloud service. Oasis isn't a therapist. If you're in danger, tap <b>Need help now?</b></p>
+      </div>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <div class="composer-wrap">
+        <div id="talk-notice" class="notice" hidden></div>
+        <form id="talk-form" class="composer">
+          <textarea id="talk-input" rows="1" placeholder="Write whatever feels right…" aria-label="Message"></textarea>
+          <button id="talk-send" class="send" type="submit" aria-label="Send">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="talk-stop" class="send stop" type="button" aria-label="Stop" hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>
+          </button>
+        </form>
+        <button id="talk-new" class="link-btn" type="button" hidden>Start a fresh conversation</button>
+      </div>
+    </section>
+
+    <!-- COMMUNITY ────────────────────────────────────────────────────── -->
+    <section id="view-community" class="view" aria-label="Community">
+      <div id="forum-list-view">
+        <div class="card intro">
+          <h2>Community</h2>
+          <p class="soft">An anonymous space to share what you're going through and support each other. No accounts, no names. Posts travel peer-to-peer between members of your community.</p>
+          <div class="alias-row">
+            <span class="soft">You appear as</span>
+            <b id="alias">…</b>
+            <button id="alias-new" class="link-btn" type="button">change</button>
+          </div>
+        </div>
+
+        <button id="compose-open" class="primary wide" type="button">Share something</button>
+
+        <form id="compose" class="card compose" hidden>
+          <div class="chips" id="compose-tags"></div>
+          <input id="compose-title" maxlength="120" placeholder="A short title (optional)" />
+          <textarea id="compose-body" rows="4" maxlength="2000" placeholder="What's been happening? Share as much or as little as you like."></textarea>
+          <p class="form-error" id="compose-error" hidden></p>
+          <div class="row end">
+            <button type="button" class="ghost" id="compose-cancel">Cancel</button>
+            <button type="submit" class="primary">Post anonymously</button>
+          </div>
+          <p class="fineprint">Be kind. Don't include names or details that could identify you or others.</p>
+        </form>
+
+        <div class="chips scroll" id="tag-filter"></div>
+        <div id="posts" class="posts"></div>
+      </div>
+
+      <div id="forum-thread-view" hidden>
+        <button id="thread-back" class="link-btn back" type="button">← Back to community</button>
+        <div id="thread"></div>
+        <form id="reply-form" class="card compose">
+          <textarea id="reply-body" rows="3" maxlength="2000" placeholder="Write something kind…"></textarea>
+          <p class="form-error" id="reply-error" hidden></p>
+          <div class="row end"><button type="submit" class="primary">Reply</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- RESOURCES ────────────────────────────────────────────────────── -->
+    <section id="view-resources" class="view" aria-label="Support">
+      <div class="card urgent-card">
+        <h2>Urgent support</h2>
+        <div id="crisis-inline" class="contacts"></div>
+      </div>
+      <div class="search">
+        <input id="res-search" type="search" placeholder="Search support (e.g. extensions, bullying, sleep)" />
+      </div>
+      <p id="res-note" class="fineprint" hidden></p>
+      <div id="resources" class="resources"></div>
+    </section>
+  </main>
+
+  <!-- Urgent help sheet -->
+  <div class="sheet-backdrop" id="crisis-sheet" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="crisis-title">
+      <div class="sheet-handle"></div>
+      <h2 id="crisis-title">You don't have to face this alone</h2>
+      <p class="soft">If you or someone else is in immediate danger, please reach out now. These are free and confidential.</p>
+      <div id="crisis-contacts" class="contacts"></div>
+      <button class="ghost wide" type="button" data-close>Close</button>
+    </div>
+  </div>
+
+  <!-- Debug / system drawer -->
+  <div class="sheet-backdrop" id="debug-sheet" hidden>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="debug-title">
+      <div class="drawer-head">
+        <h2 id="debug-title">System details</h2>
+        <button class="icon-btn" type="button" data-close aria-label="Close">✕</button>
+      </div>
+      <div id="debug-body" class="debug"></div>
+    </aside>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
