@@ -25,6 +25,22 @@
 Both bind to **loopback only**. Remote access to the host is only possible
 through the Holesail tunnel.
 
+### Plain Holesail devices (no repo)
+
+A device can also skip running Oasis entirely: `holesail hs://s000… --port 8989`
+(CLI, or the Holesail Go app) tunnels the browser straight to the host. The host
+serves the complete app, using its own forum node, so nothing else is needed.
+The host marks these requests as `via: p2p-tunnel` because the browser's Host
+header carries the tunnel port, not 8787.
+
+### Stale-process protection
+
+`src/version.js` defines `API_LEVEL`. `/api/health` and `/api/status` report it,
+and the UI compares it with its own `EXPECTED_API`. A mismatch shows a "needs a
+restart" banner. At startup, `listenOrExplain()` probes whatever holds the port
+and prints a plain-language fix instead of a stack trace. The host also checks
+that it's findable on the DHT (`Holesail.lookup`) and logs ✔/✖.
+
 ## One secret, two P2P channels
 
 The host generates a 256-bit secret (`data/holesail-host.key`). The invite is

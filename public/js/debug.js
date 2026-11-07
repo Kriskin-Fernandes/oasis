@@ -21,7 +21,7 @@ export function renderDebug (s, store) {
   body.innerHTML = ''
   body.append(
     section('Connection',
-      dl(['This device', role === 'client' ? 'Client node' : 'Host node (runs the AI)'],
+      dl(['This device', role === 'client' ? 'Oasis client node (own forum copy)' : s.you?.via === 'p2p-tunnel' ? 'Connected to the host through Holesail' : 'Host node (runs the AI)'],
         ['Reached via', s.you?.via === 'p2p-tunnel' ? okText('Holesail P2P tunnel') : 'Local (same machine as the host)'],
         role === 'client' ? ['Host reachable', s.node.hostReachable ? okText(`yes (${s.node.hostRttMs} ms status RTT)`) : errText('no')] : null,
         ['Ping', lastPing || '—']),
@@ -48,6 +48,7 @@ export function renderDebug (s, store) {
 
     section('Holesail tunnel (AI over P2P)',
       dl(['State', p2p.state === 'listening' ? okText('listening on DHT') : (p2p.state || '—')],
+        p2p.dht ? ['DHT self-check', p2p.dht === 'verified' ? okText('✔ findable by other devices') : errText('✖ not visible yet (firewall / internet?)')] : null,
         ['Open connections', String(p2p.peers ?? 0)],
         p2p.peerIds?.length ? ['Peers', p2p.peerIds.join(', ')] : null,
         s.clientTunnel ? ['This client', `${s.clientTunnel.state} (local port ${s.clientTunnel.localPort})`] : null),

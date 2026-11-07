@@ -47,37 +47,44 @@ npm run prefetch     # optional: downloads Qwen3.5-9B (~5.7 GB) and asks it one 
 
 ## Run the demo
 
+> **Upgrading from an earlier version?** Close every terminal still running
+> `npm run host` or `npm run client` first. An old process keeps the port and
+> serves outdated code (that was the cause of "not found" errors). Oasis now
+> detects this and tells you.
+
 ### 1. Host (the machine with the GPU)
 
-```bash
+```powershell
+$env:GUH_UNIVERSITY="The University of Manchester"   # optional: your university's name
 npm run host
 ```
 
-The host prints the **community invite**: an `hs://s000…` connection string
-and a QR code. Open **http://127.0.0.1:8787**.
+The host prints the **community invite** (an `hs://s000…` connection string),
+a QR code, ready-to-paste commands for other devices, and a **P2P
+self-check ✔** once it is findable on the network. Open
+**http://127.0.0.1:8787**.
 
 The invite is a secret. It's the key for both the AI tunnel and the forum. It's
-saved in `data/holesail-host.key`, so it stays the same across restarts. Delete
-that file to rotate it; this also starts a fresh forum.
+saved in `data/holesail-host.key`, so it stays the same across restarts.
 
-### 2. Client (a student's laptop, any network)
+### 2. Other devices: no repo needed
+
+**→ Step-by-step guide: [docs/P2P-SETUP.md](docs/P2P-SETUP.md)**
+
+Short version, on any laptop with Node.js:
 
 ```bash
-npm install
-npm run client -- hs://s000<invite>
+npx holesail@2 hs://s000<invite> --port 8989
 ```
 
-The browser opens **http://127.0.0.1:8788**. The student sees the same app. Chat
-goes to the host's GPU over Holesail, and the forum syncs directly between
-peers.
+then open **http://127.0.0.1:8989**. That's the full Oasis app (Talk,
+Community, Support), served by the host over an encrypted P2P tunnel.
+iPhone: **Holesail Go** app → scan the host's QR code → open the address it
+shows in Safari.
 
-**One-machine demo:** run `npm run host` and `npm run client -- hs://…` in two
-terminals, then open `:8787` and `:8788` side by side. Post in Community on one
-and it appears on the other within about a second.
-
-**Phone:** open the client URL in the phone's browser, or scan the host's QR
-code with the Holesail mobile app and open the port it shows. The UI is
-designed for phones first, and you can add it to the home screen.
+**Optional full client** (needs the repo): `npm run client -- hs://s000<invite>`
+gives a device its own forum replica that keeps working while the host is
+offline (UI on http://127.0.0.1:8788).
 
 ### What to show judges
 1. **Talk:** tap *"I'm overwhelmed with deadlines"*. The reply streams from the
@@ -85,18 +92,20 @@ designed for phones first, and you can add it to the home screen.
 2. **Crisis path:** type something like *"I don't want to be alive anymore"*.
    Urgent contacts appear **before** the model replies, and the reply repeats
    them.
-3. **Community:** post anonymously from the client. It appears on the host, and
-   replies and 💚 support flow back.
+3. **Community:** post anonymously from a second device. It appears on the
+   host, and replies and 💚 support flow back.
 4. **System details** (the sliders icon at top right): live proof of local
    inference (model, tok/s, GPU, VRAM), Holesail tunnel peers, forum peers and
    sync counts, and the knowledge-base files.
-5. Stop the host. The client's Community tab keeps working, and Talk explains
-   that the host is unreachable.
+5. On a full client (`npm run client`), stop the host. Community keeps working,
+   and Talk explains that the host is unreachable.
 
 ## Adding university resources (Firecrawl)
 
 Put Firecrawl JSON output in [`firecrawl/`](firecrawl/README.md). The host
-re-indexes **live**. Scrape, crawl and extract formats are all supported,
+re-indexes **live**. The loader also repairs scraped URLs where dots became
+slashes (`https://www/mind/org/uk/…` → `https://www.mind.org.uk/…`), drops
+"page not found" scrapes, and strips navigation and cookie-banner noise. Scrape, crawl and extract formats are all supported,
 including structured people lists (`name`, `role`, `email`…), which is ideal
 for SRC members and ambassadors. Check what was loaded with `npm run test:kb`.
 
@@ -163,10 +172,15 @@ PowerShell: `$env:GUH_UNIVERSITY="University of Glasgow"; npm run host`
   `QVAC_MODEL_FILE=Qwen3.5-9B-Q3_K_M.gguf`.
 - **"Deep thinking"** (in System details) turns on Qwen's reasoning. Replies
   get more considered but are much slower.
-- **The client can't reach the host:** check that the host is running and that
-  you copied the whole invite. Some campus networks block UDP hole-punching;
-  a phone hotspot confirms whether that's the cause.
-- **Port in use:** set `GUH_HTTP_PORT` / `GUH_CLIENT_PORT` / `GUH_TUNNEL_PORT`.
+- **"Oasis needs a restart" banner, or "not found" when posting:** an old
+  `npm run host` is still running. Close all Oasis terminals (or end
+  `node.exe` in Task Manager) and start it again.
+- **P2P not connecting:** see the troubleshooting table in
+  [docs/P2P-SETUP.md](docs/P2P-SETUP.md). The usual causes are Windows Firewall
+  blocking Node.js, an incomplete invite, or campus Wi-Fi blocking UDP (test
+  with a phone hotspot).
+- **Port in use:** the host or client tells you what is holding it. Set
+  `GUH_HTTP_PORT` / `GUH_CLIENT_PORT` / `GUH_TUNNEL_PORT` to use another.
 
 ## Project layout
 

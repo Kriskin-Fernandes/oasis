@@ -17,9 +17,17 @@ async function chat (base, text) {
 
 // 1. Status through the client node
 const s = await get(CLIENT, '/api/status')
-ok(s.node?.role === 'client' && s.node.hostReachable, 'client reaches host over Holesail', `(status RTT ${s.node?.hostRttMs} ms)`)
+const plain = s.node?.role === 'host' // a bare `holesail <invite>` tunnel straight to the host
+console.log(`▸ testing ${plain ? 'a plain Holesail device (npx holesail / Holesail Go)' : 'an Oasis client node'} at ${CLIENT}\n`)
+ok(s.api === 3, 'server API is current (not a stale process)', `(api ${s.api}, v${s.version})`)
+if (plain) {
+  ok(s.you?.via === 'p2p-tunnel', 'request reached the host through the Holesail tunnel')
+} else {
+  ok(s.node?.hostReachable, 'client reaches host over Holesail', `(status RTT ${s.node?.hostRttMs} ms)`)
+  ok(s.forum?.peers >= 1, 'client forum node has Hyperswarm peers', `(${s.forum?.peers})`)
+}
 ok(s.model?.state === 'ready', 'host model ready', s.model?.model)
-ok(s.forum?.peers >= 1, 'client forum node has Hyperswarm peers', `(${s.forum?.peers})`)
+ok(s.app?.name === 'Oasis', 'app is named Oasis')
 const hs = await get(HOST, '/api/status')
 ok(hs.p2p?.peers >= 1, 'host sees Holesail tunnel connection(s)', `(${hs.p2p?.peers})`)
 
@@ -52,10 +60,10 @@ for (let i = 0; i < 30; i++) { await sleep(500); th = await get(CLIENT, `/api/fo
 ok(th?.replies?.length === 1 && th.post.support === 1, 'reply + support replicated host → client', `(${Date.now() - t0} ms)`)
 
 // 5. Resources + crisis + UI through the client
-const r = await get(CLIENT, '/api/resources?q=bullying')
-ok(r.resources?.[0]?.title?.includes('Report'), 'resource search over P2P', r.resources?.[0]?.title)
+const r = await get(CLIENT, '/api/resources?q=counsellor')
+ok(r.resources?.length > 0 && r.resources.every((x) => !x.url || /^https?:\/\/[^/]+\.[^/]+/.test(x.url)), 'resource search over P2P (valid links)', r.resources?.[0]?.title)
 ok((await get(CLIENT, '/api/crisis')).contacts?.length > 0, 'crisis contacts served')
-ok((await (await fetch(CLIENT + '/')).text()).includes('Oasis'), 'UI served on client')
+ok((await (await fetch(CLIENT + '/')).text()).includes('Oasis'), 'UI served through this path')
 
 console.log(failed ? `\n${failed} check(s) failed` : '\nAll checks passed')
 process.exit(failed ? 1 : 0)

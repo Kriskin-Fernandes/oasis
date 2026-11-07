@@ -14,7 +14,7 @@ import { ForumNode } from './forum/forum-node.js'
 import { createHttpServer, listenOrExplain } from './server/http.js'
 import { guideRoutes } from './server/guide-routes.js'
 import { forumRoutes } from './server/forum-routes.js'
-import { startHostTunnel, loadOrCreateHostKey } from './p2p/tunnel.js'
+import { startHostTunnel, loadOrCreateHostKey, lookupHost } from './p2p/tunnel.js'
 
 const ts = () => new Date().toLocaleTimeString()
 const log = (...a) => console.log(`[${ts()}]`, ...a)
@@ -64,14 +64,9 @@ if (config.host.p2p) {
   try {
     tunnel = await startHostTunnel({ port: config.host.httpPort, host: config.host.httpHost, key: secret })
     p2pState = { enabled: true, state: 'listening' }
-    console.log('\n' + '─'.repeat(72))
-    console.log(' P2P ready. This connection string is your community invite.')
-    console.log(' Share it ONLY with people you trust:\n')
-    console.log('   ' + tunnel.url + '\n')
-    console.log(' Another computer:   npm run client -- ' + tunnel.url)
-    console.log(' A phone:            scan with the Holesail mobile app\n')
-    qrcode.generate(tunnel.url, { small: true })
-    console.log('─'.repeat(72) + '\n')
+    printInvite(tunnel.url)
+    // Self-check: can a fresh peer find this host on the DHT right now?
+    verifyOnDht(tunnel.url)
   } catch (e) {
     p2pState = { enabled: true, state: 'error', error: e.message }
     log('P2P tunnel failed to start:', e.message)
@@ -80,6 +75,42 @@ if (config.host.p2p) {
 
 log(`open ${localUrl}`)
 engine.load().catch(() => {}) // status is reported via events + /api/status
+
+function printInvite (url) {
+  const line = '─'.repeat(76)
+  console.log(`\n${line}
+ P2P READY. This is your community invite. Share it ONLY with people you trust:
+
+   ${url}
+
+ Other devices DON'T need this project. Pick one:
+
+   • Laptop / PC (needs Node.js from nodejs.org):
+       npx holesail@2 ${url} --port 8989
+     then open  http://127.0.0.1:8989
+
+   • iPhone: install "Holesail Go", scan the QR code below (or paste the invite),
+     connect, then open the local address the app shows in Safari.
+
+   • Full Oasis client (its own forum copy, works offline):
+       npm run client -- ${url}
+${line}`)
+  qrcode.generate(url, { small: true })
+  console.log(line + '\n')
+}
+
+async function verifyOnDht (url, attempt = 1) {
+  const r = await lookupHost(url)
+  if (r && !r.error && (r.port || r.host)) {
+    p2pState = { ...p2pState, dht: 'verified' }
+    log('P2P self-check ✔ this host can be found on the Holesail DHT')
+  } else if (attempt < 4) {
+    setTimeout(() => verifyOnDht(url, attempt + 1), 5000 * attempt)
+  } else {
+    p2pState = { ...p2pState, dht: 'not found' }
+    log('P2P self-check ✖ host not visible on the DHT yet. Check the internet connection, and that Windows Firewall allows Node.js (see README → Troubleshooting).')
+  }
+}
 
 let closing = false
 async function shutdown () {
